@@ -2,8 +2,6 @@ filetype plugin on
 filetype indent on
 syntax on
 
-set tabstop=4
-set shiftwidth=4
 set expandtab
 set autoindent
 set incsearch
@@ -111,7 +109,6 @@ autocmd BufEnter * nested :call tagbar#autoopen(0)
 autocmd FileType qf wincmd J
 autocmd QuickFixCmdPost [^l]* nested cwindow
 autocmd QuickFixCmdPost    l* nested lwindow
-autocmd BufWritePre * :call CleanUp()
 
 highlight OverLength ctermbg=121 guibg=#87ffaf ctermfg=black
 match OverLength /\%>120v.\+/
@@ -127,3 +124,14 @@ highlight Folded ctermbg=DarkGray
 set cm=blowfish2
 
 runtime ftplugin/man.vim
+
+if hostname() == "janek"
+  set tabstop=4
+  set shiftwidth=4
+  autocmd BufWritePre * :call CleanUp()
+else
+  set tabstop=2
+  set shiftwidth=2
+endif
+
+
