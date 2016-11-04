@@ -101,7 +101,7 @@ export PATH="${PATH}:/opt/gcc-arm-none-eabi-4_8-2014q2/bin/"
 PS1="$(if [[ ${EUID} == 0 ]]; then echo '\[\e[0;31m\][\u@\h:\w ]#\[\e[m\] '; else echo '\[\e[0;32m\][\u@\h:\w ]$\[\e[m\] '; fi)"
 
 PROMPT_COMMAND="history -a; $PROMPT_COMMAND"
-eval $(keychain --eval --quiet id_rsa)
+#eval $(keychain --eval --quiet id_rsa)
 
 command_not_found_handle() {
     echo "Hello $1!"

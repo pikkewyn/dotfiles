@@ -80,8 +80,6 @@ nmap <F6> :let @*=expand("%:p")<CR>
 map K :call ReadMan()<CR>
 
 "highlight whitespaces for you in a convenient way
-set list
-set listchars=tab:>.,trail:.,extends:#,nbsp:.
 set runtimepath^=~/.vim/bundle/ctrlp.vim "for ctrlp plugin
 set path=$PWD/**
 "set clipboard+=unnamed
@@ -125,6 +123,8 @@ runtime ftplugin/man.vim
 if hostname() == "janek"
   set tabstop=4
   set shiftwidth=4
+  set list
+  set listchars=tab:>.,trail:.,extends:#,nbsp:.
   highlight OverLength ctermbg=121 guibg=#87ffaf ctermfg=black
   match OverLength /\%>120v.\+/
   autocmd BufWritePre * :call CleanUp()
