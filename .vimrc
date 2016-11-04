@@ -110,9 +110,6 @@ autocmd FileType qf wincmd J
 autocmd QuickFixCmdPost [^l]* nested cwindow
 autocmd QuickFixCmdPost    l* nested lwindow
 
-highlight OverLength ctermbg=121 guibg=#87ffaf ctermfg=black
-match OverLength /\%>120v.\+/
-
 set foldmethod=indent   "fold based on indent
 set foldnestmax=1       "deepest fold is 10 levels
 "set nofoldenable        "dont fold by default
@@ -128,6 +125,8 @@ runtime ftplugin/man.vim
 if hostname() == "janek"
   set tabstop=4
   set shiftwidth=4
+  highlight OverLength ctermbg=121 guibg=#87ffaf ctermfg=black
+  match OverLength /\%>120v.\+/
   autocmd BufWritePre * :call CleanUp()
 else
   set tabstop=2
