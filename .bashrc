@@ -28,9 +28,26 @@ function geany () { nohup geany $1 &> /dev/null & }
 
 function notify()
 {
-  for (( i = 0; i < $#; ++i )); do
-    echo -e "$1" | osd_cat -c red -l 8 -i 10 -o 10 -f -*-*-bold-*-*-*-42-120-*-*-*-*-*-*  -p bottom -A center -s 1
-  done
+  local statusfile="/tmp/notify.status"
+  if [[ $1 == "s" ]]; then
+    pid=$(grep -Po "(?<=$2 )[0-9]*")
+    kill $pid
+  else
+    if [[ -f $statusfile ]]; then
+      jobid=$(($(tail -n 1 | grep "^[0-9]*") + 1))
+    else
+      jobid=0
+    fi
+    {
+      sleep "$2s" 
+      while [[ $running -eq 1 ]]
+      do
+        echo -e "$jobid) ${1^^}" | osd_cat -c red -l 8 -i 10 -o 10 -f -*-*-bold-*-*-*-42-120-*-*-*-*-*-*  -p bottom -A center -s 1
+      done
+    } &
+    disown
+    echo $((jobid)) $! >> $statusfile
+  fi
 }
 
 function man() {
@@ -101,7 +118,10 @@ export PATH="${PATH}:/opt/gcc-arm-none-eabi-4_8-2014q2/bin/"
 PS1="$(if [[ ${EUID} == 0 ]]; then echo '\[\e[0;31m\][\u@\h:\w ]#\[\e[m\] '; else echo '\[\e[0;32m\][\u@\h:\w ]$\[\e[m\] '; fi)"
 
 PROMPT_COMMAND="history -a; $PROMPT_COMMAND"
-#eval $(keychain --eval --quiet id_rsa)
+
+if [[ $USER == "janek" ]]; then
+  eval $(keychain --eval --quiet id_rsa)
+fi
 
 command_not_found_handle() {
     echo "Hello $1!"
